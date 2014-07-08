@@ -20,7 +20,7 @@ swagger.addModels(modelspec);
 //set api info
 swagger.setApiInfo({
   swaggerVersion: "2.1",
-  title : "'feature no' >No API Documentation"
+  title : "ethkit API Documentation"
 });
 swagger.configureDeclaration("Serpent", {
   description : "Serpent Operations",
