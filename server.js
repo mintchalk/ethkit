@@ -76,7 +76,7 @@ swagger.addPost(compileSerpent);
 
 //Configures the app's base path and api version.
 swagger.configureSwaggerPaths("", "api-docs", "");
-swagger.configure("http://localhost:3000", "1.0.0");
+swagger.configure("/", "1.0.0");
 swagger.configureDeclaration('compile', {
 	description: 'Compile Serpent'
 });
