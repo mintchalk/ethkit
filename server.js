@@ -19,18 +19,18 @@ swagger.setAppHandler(app);
 swagger.addModels(modelspec);
 //set api info
 swagger.setApiInfo({
-	swaggerVersion: "2.1",
-	title : "EthKit API Documentation"
+  swaggerVersion: "2.1",
+  title : "'feature no' >No API Documentation"
 });
 swagger.configureDeclaration("Serpent", {
-	description : "Serpent Operations",
-	authorizations : [],// "oauth2" ],
-	produces : [ "application/json" ]
+  description : "Serpent Operations",
+  authorizations : [],// "oauth2" ],
+  produces : [ "application/json" ]
 });
 app.get("/", function (req, res) {
     //res.writeHead(200, {"Content-Type": "text/plain"});
-    //res.end("EthKit");
-	res.statusCode = 302; 
+    //res.end("ethkit");
+  res.statusCode = 302; 
     res.setHeader("Location", "/docs");
     res.end();
 });
@@ -38,30 +38,30 @@ app.get("/", function (req, res) {
 
 app.post('/serpent/compile', compile.compileSerpent);
 var compileSerpent = {
-	'spec': {
-		description : "Compile Serpent Code",
-		path : "/serpent/compile",
-		notes : "EthKit offers a simple HTTP API for compiling Ethereum contract code. ",
-		summary : "Compile Serpent Code Summary",
-		supportedContentTypes: ["application/json"],
-		method: "POST",
-		type : "Serpent",
-		parameters: [
-			{
-			"name": "body",
-			"description": "code",
-			"required": true,
-			"allowMultiple": false,
-			"dataType": "Serpent Code",
-			"paramType": "body",
-			"defaultValue": '{"code": "contract.storage[1] = msg.data[10000]"}',
-			"consumes": [
-	            "application/json",
-	            "application/xml"
+  'spec': {
+    description : "Compile Serpent Code",
+    path : "/serpent/compile",
+    notes : "ethkit offers a simple HTTP API for compiling Ethereum contract code. ",
+    summary : "Compile Serpent Code Summary",
+    supportedContentTypes: ["application/json"],
+    method: "POST",
+    type : "Serpent",
+    parameters: [
+      {
+      "name": "body",
+      "description": "code",
+      "required": true,
+      "allowMultiple": false,
+      "dataType": "Serpent Code",
+      "paramType": "body",
+      "defaultValue": '{"code": "contract.storage[1] = msg.data[10000]"}',
+      "consumes": [
+              "application/json",
+              "application/xml"
           ]
-		}],
+    }],
 
-		responseMessages: [
+    responseMessages: [
             {
               "code": 405,
               "message": "Invalid input",
@@ -69,8 +69,8 @@ var compileSerpent = {
             }
           ],
           nickname : "compileSerpent"
-	  },
-	 'action': compile.compileSerpent
+    },
+   'action': compile.compileSerpent
 };
 swagger.addPost(compileSerpent);
 
@@ -78,22 +78,22 @@ swagger.addPost(compileSerpent);
 swagger.configureSwaggerPaths("", "api-docs", "");
 swagger.configure("/", "1.0.0");
 swagger.configureDeclaration('compile', {
-	description: 'Compile Serpent'
+  description: 'Compile Serpent'
 });
 // Serve up swagger ui at /docs via static route
 var docs_handler = express.static('./swagger-ui/');
 app.get(/^\/docs(\/.*)?$/, function(req, res, next) {
-	if (req.url === '/docs') { // express static bars on root url w/o trailing
-		// slash
-		res.writeHead(302, {
-			'Location' : req.url + '/'
-		});
-		res.end();
-		return;
-	}
-	// take off leading /docs so that connect locates file correctly
-	req.url = req.url.substr('/docs'.length);
-	return docs_handler(req, res, next);
+  if (req.url === '/docs') { // express static bars on root url w/o trailing
+    // slash
+    res.writeHead(302, {
+      'Location' : req.url + '/'
+    });
+    res.end();
+    return;
+  }
+  // take off leading /docs so that connect locates file correctly
+  req.url = req.url.substr('/docs'.length);
+  return docs_handler(req, res, next);
 });
 
 var port = Number(process.env.PORT || 3000);
