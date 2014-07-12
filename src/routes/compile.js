@@ -14,7 +14,7 @@ exports.compileSerpent = function (req, res) {
     
     res.writeHead(200, {"Content-Type": "application/json"});
     serpent_results = {};
-    if (req.body.debug)
+    if (req.body.debug || true)
         serpent_results['code'] = req.body.code;
     // run serpent commands
     var setSerpentResults = function(k, e, o, err){

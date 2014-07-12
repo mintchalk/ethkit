@@ -8,6 +8,9 @@ var express = require('express'),
     winston = require("winston"),
     modelspec = require('./src/api/model-spec.js');
     compile = require('./src/routes/compile'),
+    serpent = require('./src/serpent'),
+    eth_js = require('./src/eth-js'),
+    eth_views = require('./src/routes/eth-js'),
     app = express();
 
 winston.handleExceptions(new winston.transports.Console);
@@ -37,42 +40,12 @@ app.get("/", function (req, res) {
 
 
 app.post('/serpent/compile', compile.compileSerpent);
-var compileSerpent = {
-  'spec': {
-    description : "Compile Serpent Code",
-    path : "/serpent/compile",
-    notes : "ethkit offers a simple HTTP API for compiling Ethereum contract code. ",
-    summary : "Compile Serpent Code Summary",
-    supportedContentTypes: ["application/json"],
-    method: "POST",
-    type : "Serpent",
-    parameters: [
-      {
-      "name": "body",
-      "description": "code",
-      "required": true,
-      "allowMultiple": false,
-      "dataType": "Serpent Code",
-      "paramType": "body",
-      "defaultValue": '{"code": "contract.storage[1] = msg.data[10000]"}',
-      "consumes": [
-              "application/json",
-              "application/xml"
-          ]
-    }],
+swagger.addPost(serpent.compileSerpentSchema);
 
-    responseMessages: [
-            {
-              "code": 405,
-              "message": "Invalid input",
-              "responseModel": "SerpentCode"
-            }
-          ],
-          nickname : "compileSerpent"
-    },
-   'action': compile.compileSerpent
-};
-swagger.addPost(compileSerpent);
+app.post('/eth/create', eth_views.createContract);
+swagger.addPost(eth_js.createContractSchema);
+
+
 
 //Configures the app's base path and api version.
 swagger.configureSwaggerPaths("", "api-docs", "");
