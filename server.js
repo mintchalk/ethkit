@@ -17,6 +17,11 @@ winston.handleExceptions(new winston.transports.Console);
 
 // parse application/json
 app.use(bodyParser.json());
+app.all('/*', function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+});
 //Couple the application to the Swagger module.
 swagger.setAppHandler(app);
 swagger.addModels(modelspec);
