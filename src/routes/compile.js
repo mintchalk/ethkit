@@ -3,16 +3,21 @@ var mongoose = require('mongoose'),
 var SerpentCode = mongoose.model('SerpentCode');
 var exec = require('child_process').exec;
 
+var headers = {
+    "Content-Type": "application/json", 
+    "Access-Control-Allow-Origin": "*"
+}
 
 exports.compileSerpent = function (req, res) {
+
     winston.log('POST: ' + req.body);
     winston.log(req.body);
     if (!req.body.code){
-        res.writeHead(405, {"Content-Type": "application/json"});
+        res.writeHead(405, headers);
         res.end(JSON.stringify({'error': 'code value is missing'}))
     }
     
-    res.writeHead(200, {"Content-Type": "application/json"});
+    res.writeHead(200, headers);
     serpent_results = {};
     if (req.body.debug || true)
         serpent_results['code'] = req.body.code;
