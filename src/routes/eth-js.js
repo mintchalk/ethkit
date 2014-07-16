@@ -42,10 +42,7 @@ getCompiledCode = function(code, req, res){
 createEthContract = function(o, req, res){
 	var eth_results = {}
 	var compiled_code = o;
-
-	unirest.post(ethKitClient(req))
-	.type('json')
-	.send({
+	var contract_params = {
             method: "create",
             params: {
 			  'xEndowment': req.body.endowment ||  0,
@@ -56,10 +53,15 @@ createEthContract = function(o, req, res){
 			},
             jsonrpc: "2.0",
             id: "1"
-     })
+     }
+    console.log('creating contract')
+    console.log(contract_params)
+	unirest.post(ethKitClient(req))
+	.type('json')
+	.send(contract_params)
 	.end(function (response) {
 
-	  eth_results['response'] = response.body.toString();
+	  eth_results['response'] = response.body;
 	  res.write(JSON.stringify(eth_results));
 	  res.end();
 	})
