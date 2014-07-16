@@ -13,7 +13,7 @@ exports.compileSerpent = function (req, res) {
     winston.log('POST: ' + req.body);
     winston.log(req.body);
     if (!req.body.code){
-        res.writeHead(405, headers);
+        res.writeHead(400, headers);
         res.end(JSON.stringify({'error': 'code value is missing'}))
     }
     

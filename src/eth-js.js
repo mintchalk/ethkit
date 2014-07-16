@@ -15,7 +15,7 @@ exports.createContractSchema = {
   'spec': {
     description : "Create Contract",
     path : "/eth/create",
-    notes : "Pass in bytecode or serpent code to create a contract",
+    notes : "Pass in bytecode or serpent code to create a contract. You must have the eth client running on the same server!",
     summary : "Compile Create Contract Summary",
     supportedContentTypes: ["application/json"],
     method: "POST",
@@ -27,7 +27,7 @@ exports.createContractSchema = {
       "allowMultiple": false,
       "dataType": "Create Contract",
       "paramType": "body",
-      "defaultValue": '{"sec": "", "xEndowment": "", "bCode": "", "xGas": "", "xGasPrice": "" }',
+      "defaultValue": '{ "code":"contract.storage[1] = 2", "sec": 123, "endowment": 10, "gas": 10000, "gasPrice": 10 }',
       "consumes": [
               "application/json",
               "application/xml"
