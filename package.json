@@ -12,7 +12,7 @@
         "winston": "0.7.3",
         "cors": "2.4.1",
         "swagger-node-express": "2.1.0",
-        "unirest": "0.2.7",
+        "unirest": "0.2.7"
     },
     "devDependencies": {
         "grunt": "^0.4.5",
