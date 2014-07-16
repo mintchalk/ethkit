@@ -1,6 +1,4 @@
 require('./src/db');
-cors = require('cors');
-app.use(cors());
 
 var express = require('express'),
     bodyParser = require('body-parser'),
@@ -16,6 +14,9 @@ var express = require('express'),
     app = express();
 
 winston.handleExceptions(new winston.transports.Console);
+
+cors = require('cors');
+app.use(cors());
 
 // parse application/json
 app.use(bodyParser.json());
