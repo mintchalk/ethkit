@@ -31,9 +31,15 @@ exports.createContract = function (req, res) {
 
 getCompiledCode = function(code, req, res){
 
-    exec('serpent compile' + '"' + code + '"', 
+    exec('serpent compile ' + '"' + code + '"', 
     function(e,o,err){
-    	// TODO: check for errors
+
+		if (err){
+   	 	    res.write(JSON.stringify({'errors': {'serpent': err.trim()} }));
+		    res.end();
+            return;
+        }
+
     	createEthContract(o, req, res);
 	});
 }
@@ -44,11 +50,11 @@ createEthContract = function(o, req, res){
 	var contract_params = {
             method: "create",
             params: {
-			  'xEndowment': req.body.endowment ||  0,
+			  'xEndowment': parseInt(req.body.endowment) ||  0,
 			  'bCode': compiled_code,
 			  'sec': req.body.sec,
-			  'xGas': req.body.gas,
-			  'xGasPrice': req.body.gasPrice
+			  'xGas': parseInt(req.body.gas) || 0,
+			  'xGasPrice': parseInt(req.body.gasPrice) || 0
 			},
             jsonrpc: "2.0",
             id: "1"
