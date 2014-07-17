@@ -48,6 +48,8 @@ swagger.addPost(serpent.compileSerpentSchema);
 app.post('/eth/create', eth_views.createContract);
 swagger.addPost(eth_js.createContractSchema);
 
+app.post('/eth/transact', eth_views.sendTransaction);
+swagger.addPost(eth_js.sendTransactionSchema);
 
 
 //Configures the app's base path and api version.

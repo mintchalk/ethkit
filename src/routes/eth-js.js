@@ -27,7 +27,6 @@ exports.createContract = function (req, res) {
     
     getCompiledCode(req.body.code, req, res);
 
-
 }
 
 getCompiledCode = function(code, req, res){
@@ -58,7 +57,7 @@ createEthContract = function(o, req, res){
     console.log(contract_params)
 	unirest.post(ethKitClient(req))
 	.type('json')
-	.send(contract_params)
+	.send(JSON.stringify(contract_params))
 	.end(function (response) {
 
 	  eth_results['response'] = response.body;
@@ -70,4 +69,56 @@ createEthContract = function(o, req, res){
 ethKitClient = function(req){
 	var ethkit_client = req.protocol + '://' + req.get('host').split(':')[0] + ':' + ETH_PORT;
 	return ethkit_client;
+}
+
+
+exports.sendTransaction = function (req, res) {
+
+    winston.log('POST: ' + req.body);
+    winston.log(req.body);
+
+    req_args = ['data','sec','destination', 'value'];
+    for (i=0; i<req_args.length; i++){
+    	if (req.body[req_args[i]] === undefined){
+        res.writeHead(400, headers);
+        res.end(JSON.stringify({'error': req_args[i] + ' value is missing'}))
+    	}
+    }
+
+    res.writeHead(200, headers);
+    
+    sendEthTransaction(req, res);
+
+}
+
+sendEthTransaction = function(req, res){
+	// TODO: compile message data
+	var msg_data = req.body.data;
+
+	var eth_results = {}
+
+	var tranx_params = {
+            method: "transact",
+            params: {
+                "aDest": req.body.destination,
+                "bData": msg_data,
+                "sec": req.body.sec,
+                "xGas": req.body.gas || 0,
+                "xGasPrice": req.body.gasPrice || 0,
+                "xValue": req.body.value || 0
+			},
+            jsonrpc: "2.0",
+            id: "1"
+     }
+    console.log('sending transaction')
+    console.log(tranx_params)
+	unirest.post(ethKitClient(req))
+	.type('json')
+	.send(JSON.stringify(tranx_params))
+	.end(function (response) {
+
+	  eth_results['response'] = response.body;
+	  res.write(JSON.stringify(eth_results));
+	  res.end();
+	})
 }
