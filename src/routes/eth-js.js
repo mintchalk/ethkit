@@ -46,7 +46,7 @@ getCompiledCode = function(code, req, res){
 
 createEthContract = function(o, req, res){
 	var eth_results = {}
-	var compiled_code = o;
+	var compiled_code = o.trim();
 	var contract_params = {
             method: "create",
             params: {
@@ -59,13 +59,12 @@ createEthContract = function(o, req, res){
             jsonrpc: "2.0",
             id: "1"
      }
-    console.log('creating contract')
-    console.log(contract_params)
+    console.log('params for creating contract', JSON.stringify(contract_params));
 	unirest.post(ethKitClient(req))
 	.type('json')
 	.send(JSON.stringify(contract_params))
 	.end(function (response) {
-
+	  console.log('response from eth client for creating contract', response.body);
 	  eth_results['response'] = response.body;
 	  res.write(JSON.stringify(eth_results));
 	  res.end();
@@ -116,15 +115,19 @@ sendEthTransaction = function(req, res){
             jsonrpc: "2.0",
             id: "1"
      }
-    console.log('sending transaction')
-    console.log(tranx_params)
+    console.log('params for sending transaction', JSON.stringify(tranx_params));
 	unirest.post(ethKitClient(req))
 	.type('json')
 	.send(JSON.stringify(tranx_params))
 	.end(function (response) {
-
+	  console.log('response from eth client for sending transaction', response.body);
 	  eth_results['response'] = response.body;
 	  res.write(JSON.stringify(eth_results));
 	  res.end();
 	})
 }
+
+
+String.prototype.trim = function() {
+  return this.replace(/^\s+|\s+$/g, "");
+};
