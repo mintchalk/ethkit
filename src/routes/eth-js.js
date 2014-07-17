@@ -1,6 +1,7 @@
 var mongoose = require('mongoose'),
     winston = require('winston'),
-    unirest = require('unirest');
+    unirest = require('unirest'),
+    RLP = require('rlp'); 
 var exec = require('child_process').exec;
 
 var headers = {
@@ -50,11 +51,11 @@ createEthContract = function(o, req, res){
 	var contract_params = {
             method: "create",
             params: {
-			  'xEndowment': parseInt(req.body.endowment) ||  0,
+			  'xEndowment': (req.body.endowment ||  0).toString(),
 			  'bCode': compiled_code,
 			  'sec': req.body.sec,
-			  'xGas': parseInt(req.body.gas) || 0,
-			  'xGasPrice': parseInt(req.body.gasPrice) || 0
+			  'xGas': (req.body.gas || 0).toString(),
+			  'xGasPrice': (req.body.gasPrice || 0).toString()
 			},
             jsonrpc: "2.0",
             id: "1"
@@ -97,20 +98,21 @@ exports.sendTransaction = function (req, res) {
 }
 
 sendEthTransaction = function(req, res){
-	// TODO: compile message data
-	var msg_data = req.body.data;
+
+	var msg_data = RLP.encode(req.body.data);
+	console.log('compiled message data', msg_data);
 
 	var eth_results = {}
 
 	var tranx_params = {
             method: "transact",
             params: {
-                "aDest": req.body.destination,
+                "aDest": req.body.destination.toString(),
                 "bData": msg_data,
                 "sec": req.body.sec,
-                "xGas": req.body.gas || 0,
-                "xGasPrice": req.body.gasPrice || 0,
-                "xValue": req.body.value || 0
+                "xGas": (req.body.gas || 0).toString(),
+                "xGasPrice": (req.body.gasPrice || 0).toString(),
+                "xValue": (req.body.value || 0).toString()
 			},
             jsonrpc: "2.0",
             id: "1"
